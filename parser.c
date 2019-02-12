@@ -4,7 +4,7 @@
 #include "parser.h"
 
 #define BUFFER_SIZE 128
-#define DELIMITER " "
+#define DELIMITER " \t\r\n\a"
 
 char *read_input() {
   char *input = NULL;
