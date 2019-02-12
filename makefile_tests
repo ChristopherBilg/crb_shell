@@ -1,0 +1,8 @@
+tests: tests.o parser.o
+	gcc -o tests tests.o parser.o
+
+tests.o: tests.c
+	gcc -o tests.o tests.c -c
+
+parser.o: parser.c
+	gcc -o parser.o parser.c -c
