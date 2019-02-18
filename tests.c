@@ -10,6 +10,8 @@ int main() {
     printf("[%d] %s\n", index, segments[index]);
     index++;
   }
+
+  interpret_input(segments);
   
   return 1;
 }
