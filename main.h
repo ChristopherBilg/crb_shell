@@ -10,6 +10,6 @@ int start_process(char **process_input);
 int run_execution(char **process_input);
 int run_io_redirect(char **left_side_arguments,
                     char **right_side_arguments,
-                    _Bool input, _Bool append);
+                    _Bool input);
 int run_io_pipe(char **left_side_arguments, char **right_side_arguments);
 #endif

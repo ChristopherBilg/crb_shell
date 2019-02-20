@@ -1,3 +1,4 @@
+#include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -146,15 +147,15 @@ int run_execution(char **process_input) {
     right_side_arguments[index2] = NULL; // NULL terminated
 
     // Check for io redirects and run command
-    if (io_redirect == 0) // <
-      return run_io_redirect(left_side_arguments, right_side_arguments, true, false);
-    else if (io_redirect == 1) // << append true
-      return run_io_redirect(left_side_arguments, right_side_arguments, true, true);
-    else if (io_redirect == 2) // >
-      return run_io_redirect(left_side_arguments, right_side_arguments, false, false);
-    else if (io_redirect == 3) // >>
-      return run_io_redirect(left_side_arguments, right_side_arguments, false, true);
-    else if (io_redirect == 4) // |
+    if (io_redirect == 0) // < truncate
+      return run_io_redirect(left_side_arguments, right_side_arguments, true);
+    else if (io_redirect == 1) // << append
+      return run_io_redirect(left_side_arguments, right_side_arguments, true);
+    else if (io_redirect == 2) // > truncate
+      return run_io_redirect(left_side_arguments, right_side_arguments, false);
+    else if (io_redirect == 3) // >> append
+      return run_io_redirect(left_side_arguments, right_side_arguments, false);
+    else if (io_redirect == 4) // | pipe
       return run_io_pipe(left_side_arguments, right_side_arguments);
   }
   
@@ -163,7 +164,36 @@ int run_execution(char **process_input) {
 
 int run_io_redirect(char **left_side_arguments,
                     char **right_side_arguments,
-                    _Bool input, _Bool append) {
+                    _Bool input) {
+  pid_t process_id;
+  int return_code, fd; // return code and file descriptor
+  char *filename = right_side_arguments[0];
+
+  if (input == true) {
+    // input
+    fd = open(filename, O_RDONLY, 0755);
+    
+    if (fd == -1) {
+      print_error();
+      return EXIT_FAILURE;
+    }
+
+    dup2(fd, STDIN_FILENO);
+    run_execution(right_side_arguments);
+  }
+  else {
+    // output
+    fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0755);
+
+    if (fd == -1) {
+      print_error();
+      return EXIT_FAILURE;
+    }
+
+    dup2(fd, STDOUT_FILENO);
+    run_execution(left_side_arguments);
+  }
+  
   return 1;
 }
 int run_io_pipe(char **left_side_arguments, char **right_side_arguments) {
