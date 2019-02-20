@@ -147,15 +147,15 @@ int run_execution(char **process_input) {
 
     // Check for io redirects and run command
     if (io_redirect == 0) // <
-      return 1;
-    else if (io_redirect == 1) // <<
-      return 1;
+      return run_io_redirect(left_side_arguments, right_side_arguments, true, false);
+    else if (io_redirect == 1) // << append true
+      return run_io_redirect(left_side_arguments, right_side_arguments, true, true);
     else if (io_redirect == 2) // >
-      return 1;
+      return run_io_redirect(left_side_arguments, right_side_arguments, false, false);
     else if (io_redirect == 3) // >>
-      return 1;
+      return run_io_redirect(left_side_arguments, right_side_arguments, false, true);
     else if (io_redirect == 4) // |
-      return 1;
+      return run_io_pipe(left_side_arguments, right_side_arguments);
   }
   
   return 1;
@@ -163,8 +163,7 @@ int run_execution(char **process_input) {
 
 int run_io_redirect(char **left_side_arguments,
                     char **right_side_arguments,
-                    _Bool left_side,
-                    _Bool append) {
+                    _Bool input, _Bool append) {
   return 1;
 }
 int run_io_pipe(char **left_side_arguments, char **right_side_arguments) {
