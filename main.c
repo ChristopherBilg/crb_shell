@@ -21,7 +21,7 @@ int main() {
 
     return_code = run_execution(arguments);
   }
-  while (return_code);
+  while (return_code != 0);
   
   return 1;
 }
@@ -158,5 +158,15 @@ int run_execution(char **process_input) {
       return 1;
   }
   
+  return 1;
+}
+
+int run_io_redirect(char **left_side_arguments,
+                    char **right_side_arguments,
+                    _Bool left_side,
+                    _Bool append) {
+  return 1;
+}
+int run_io_pipe(char **left_side_arguments, char **right_side_arguments) {
   return 1;
 }
