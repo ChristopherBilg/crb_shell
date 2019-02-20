@@ -6,6 +6,7 @@
 
 char *read_input();
 char **parse_input(char *input);
+int count_arguments(char **parsed_input);
 
 int run_cd(char **parsed_input);
 int run_clr();

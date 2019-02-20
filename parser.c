@@ -46,6 +46,13 @@ char **parse_input(char *input) {
   return all_segments;
 }
 
+int count_arguments(char **parsed_input) {
+  int counter = 0;
+  for (int i=0; parsed_input[i] != NULL; i++)
+    counter++;
+  return counter;
+}
+
 int run_cd(char **parsed_input) {
   if (parsed_input[1] == NULL) {
       char buffer[BUFFER_SIZE];
