@@ -8,72 +8,59 @@
 #include "parser.h"
 #include "standard.h"
 
-int main() {
-  int return_code;
+#define LINE_SIZE 1024
 
-  do {
-    char *input;
-    char **arguments;
+int main(int argc, char **argv) {
+  if (argc > 1) {
+    FILE *file;
+    if ((file = fopen(argv[1], "r")) == 0) {
+      print_error();
+      return EXIT_FAILURE;
+    }
+
+    char line[LINE_SIZE];
+    while (1) {
+      fgets(line, LINE_SIZE, file);
+
+      if (feof(file))
+        break;
+
+      int str_len = strlen(line);
+      if (line[str_len-1] == '\n')
+        line[str_len-1] = 0;
+
+      printf("%s\"%s\"\n", SHELLNAME, line);
+      char **args = parse_input(line);
+      run_execution(args);
+    }
     
-    printf("%s", SHELLNAME);
-
-    input = read_input();
-    arguments = parse_input(input);
-
-    return_code = run_execution(arguments);
+    fclose(file);
   }
-  while (return_code != 0);
-  
-  return 1;
+  else {
+    int return_code;
+    do {
+      char *input;
+      char **arguments;
+
+      printf("%s", SHELLNAME);
+
+      input = read_input();
+      arguments = parse_input(input);
+
+      return_code = run_execution(arguments);
+    }
+    while (return_code != 0);
+
+    return EXIT_SUCCESS;
+  }
 }
 
 char *internal_commands[] = {"cd", "clr", "dir", "environ", "echo", "help", "pause", "quit"};
 int (*internal_functions[]) (char**) = {&run_cd, &run_clr, &run_dir, &run_environ, &run_echo, &run_help, &run_pause, &run_quit};
 
-void interpret_input(char **parsed_input) {
-  // First job is to check for internal commands
-  char *internal_commands[] = {"cd", "clr", "dir", "environ", "echo", "help", "pause", "quit"};
-  
-  int index = 0;
-  while (internal_commands[index] != NULL) {
-    if (strcmp(internal_commands[index], parsed_input[0]) == 0)
-      run_internal(parsed_input);
-    index++;
-  }
-}
-
-void run_internal(char **parsed_input) {
-  if (strcmp(parsed_input[0], "cd") == 0) {
-    run_cd(parsed_input);
-  }
-  else if (strcmp(parsed_input[0], "clr") == 0) {
-    run_clr();
-  }
-  else if (strcmp(parsed_input[0], "dir") == 0) {
-    run_dir(parsed_input);
-  }
-  else if (strcmp(parsed_input[0], "environ") == 0) {
-    run_environ(parsed_input);
-  }
-  else if (strcmp(parsed_input[0], "echo") == 0) {
-    run_echo(parsed_input);
-  }
-  else if (strcmp(parsed_input[0], "help") == 0) {
-    run_help();
-  }
-  else if (strcmp(parsed_input[0], "pause") == 0) {
-    run_pause();
-  }
-  else if (strcmp(parsed_input[0], "quit") == 0) {
-    run_quit();
-  }
-}
-
 int start_process(char **process_input) {
   pid_t process_id;
-  pid_t wait_process_id;
 
-  int continue_ = 0;
   int background = 0;
   int waiting;
 
@@ -97,12 +84,16 @@ int start_process(char **process_input) {
   }
   else {
     // Parent will run this
-    if (!background) {
+    /*if (!background) {
       do {
         wait_process_id = waitpid(process_id, &waiting, WUNTRACED);
       }
       while (!WIFEXITED(waiting) && !WIFSIGNALED(waiting));
-    }
+      }*/
+    if (background)
+      return 1;
+    else
+      waitpid(process_id, &waiting, WUNTRACED);
   }
 
   return 1;
@@ -158,42 +149,13 @@ int run_execution(char **process_input) {
     else if (io_redirect == 4) // | pipe
       return run_io_pipe(left_side_arguments, right_side_arguments);
   }
-  
+
   return 1;
 }
 
 int run_io_redirect(char **left_side_arguments,
                     char **right_side_arguments,
                     _Bool input) {
-  pid_t process_id;
-  int return_code, fd; // return code and file descriptor
-  char *filename = right_side_arguments[0];
-
-  if (input == true) {
-    // input
-    fd = open(filename, O_RDONLY, 0755);
-    
-    if (fd == -1) {
-      print_error();
-      return EXIT_FAILURE;
-    }
-
-    dup2(fd, STDIN_FILENO);
-    run_execution(right_side_arguments);
-  }
-  else {
-    // output
-    fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0755);
-
-    if (fd == -1) {
-      print_error();
-      return EXIT_FAILURE;
-    }
-
-    dup2(fd, STDOUT_FILENO);
-    run_execution(left_side_arguments);
-  }
-  
   return 1;
 }
 int run_io_pipe(char **left_side_arguments, char **right_side_arguments) {
