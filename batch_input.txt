@@ -1,2 +1,10 @@
 dir
+pause
+clr
 environ
+cd /home/chris/Documents/crb_shell
+echo This is a test echo that should be either diplayed or saved to file.
+help
+wc main.c
+ls
+pause
