@@ -56,44 +56,39 @@ int main(int argc, char **argv) {
 }
 
 char *internal_commands[] = {"cd", "clr", "dir", "environ", "echo", "help", "pause", "quit"};
-int (*internal_functions[]) (char**) = {&run_cd, &run_clr, &run_dir, &run_environ, &run_echo, &run_help, &run_pause, &run_quit};
+int (*internal_functions[]) (char**) = {&run_cd, &run_clr, &run_dir, &run_environ,
+                                        &run_echo, &run_help, &run_pause, &run_quit};
 
 int start_process(char **process_input) {
   pid_t process_id;
 
   int background = 0;
-  int waiting;
 
   char process_name_to_run[strlen(process_input[0])];
   memset(process_name_to_run, '\0', sizeof(process_name_to_run));
 
   // Check for background process (background_)
-  if (process_input[0][strlen(process_input[0]-1)] == '&') {
+  if (strcmp(process_input[count_arguments(process_input)-1], "&") == 0) {
     // Shorten the length of the process_input by one element off of the end
-    strncpy(process_name_to_run, process_input[0], strlen(process_input[0]-1));
+    process_input[count_arguments(process_input)-1] = NULL;
     background = 1;
   }
-  else {
-    strcpy(process_name_to_run, process_input[0]);
-  }
+
+  strcpy(process_name_to_run, process_input[0]);
 
   process_id = fork();
   if (process_id == 0) {
     // Child will run this
+    if (background) {
+      int devNull = open("/dev/null", O_WRONLY);
+      dup2(devNull, STDOUT_FILENO);
+    }
     execvp(process_name_to_run, process_input);
   }
   else {
     // Parent will run this
-    /*if (!background) {
-      do {
-        wait_process_id = waitpid(process_id, &waiting, WUNTRACED);
-      }
-      while (!WIFEXITED(waiting) && !WIFSIGNALED(waiting));
-      }*/
-    if (background)
-      return 1;
-    else
-      waitpid(process_id, &waiting, WUNTRACED);
+    if (!background)
+      wait(NULL);
   }
 
   return 1;
@@ -158,6 +153,7 @@ int run_io_redirect(char **left_side_arguments,
                     _Bool input) {
   return 1;
 }
+
 int run_io_pipe(char **left_side_arguments, char **right_side_arguments) {
   return 1;
 }
