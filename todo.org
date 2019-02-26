@@ -1,8 +1,9 @@
-* TODO [0%] [0/11] 
-  1. [ ] IO Redirect input < Powerpoint
-  2. [ ] IO Redirect input << Powerpoint
-  3. [ ] IO Redirect output > Powerpoint
-  4. [ ] IO Redirect output >> Powerpoint
+#+STARTUP: showeverything
+* TODO [36%] [4/11] 
+  1. [X] IO Redirect input < Powerpoint
+  2. [X] IO Redirect input << Powerpoint
+  3. [X] IO Redirect output > Powerpoint
+  4. [X] IO Redirect output >> Powerpoint
   5. [ ] IO Redirect pipes | Powerpoint
   6. [ ] Write a simple manual for USERS to be able to use the shell
   7. [ ] Comment the entire program extensively
