@@ -59,9 +59,8 @@ char *internal_commands[] = {"cd", "clr", "dir", "environ", "echo", "help", "pau
 int (*internal_functions[]) (char**) = {&run_cd, &run_clr, &run_dir, &run_environ,
                                         &run_echo, &run_help, &run_pause, &run_quit};
 
-int start_process(char **process_input) {
+int start_process(char **process_input, int input, int filedesc) {
   pid_t process_id;
-
   int background = 0;
 
   char process_name_to_run[strlen(process_input[0])];
@@ -82,6 +81,12 @@ int start_process(char **process_input) {
     if (background) {
       int devNull = open("/dev/null", O_WRONLY);
       dup2(devNull, STDOUT_FILENO);
+    }
+    else if (filedesc != -1) {
+      if (input == 0) // output
+        dup2(filedesc, 1);
+      else
+        dup2(filedesc, 0);
     }
     execvp(process_name_to_run, process_input);
   }
@@ -112,7 +117,7 @@ int run_execution(char **process_input) {
     }
 
     // If not an internal command, return here
-    return start_process(process_input);
+    return start_process(process_input, -1, -1);
   }
   else {
     // There is an io redirect
@@ -134,13 +139,13 @@ int run_execution(char **process_input) {
 
     // Check for io redirects and run command
     if (io_redirect == 0) // < truncate
-      return run_io_redirect(left_side_arguments, right_side_arguments, true);
+      return run_io_redirect(left_side_arguments, right_side_arguments, true, false);
     else if (io_redirect == 1) // << append
-      return run_io_redirect(left_side_arguments, right_side_arguments, true);
+      return run_io_redirect(left_side_arguments, right_side_arguments, true, true);
     else if (io_redirect == 2) // > truncate
-      return run_io_redirect(left_side_arguments, right_side_arguments, false);
+      return run_io_redirect(left_side_arguments, right_side_arguments, false, false);
     else if (io_redirect == 3) // >> append
-      return run_io_redirect(left_side_arguments, right_side_arguments, false);
+      return run_io_redirect(left_side_arguments, right_side_arguments, false, true);
     else if (io_redirect == 4) // | pipe
       return run_io_pipe(left_side_arguments, right_side_arguments);
   }
@@ -150,7 +155,48 @@ int run_execution(char **process_input) {
 
 int run_io_redirect(char **left_side_arguments,
                     char **right_side_arguments,
-                    _Bool input) {
+                    _Bool input, _Bool append) {
+  int fd;
+  int error = 1;
+  if (input == true) {
+    // input io redirect
+    if (append == true) {
+      if ((fd = open(*right_side_arguments, O_CREAT | O_RDWR | O_APPEND)) < 0) {
+        print_error();
+        return error;
+      }
+
+      return start_process(left_side_arguments, 1, fd);
+    }
+    else {
+      if ((fd = open(*right_side_arguments, O_CREAT | O_RDWR | O_TRUNC)) < 0) {
+        print_error();
+        return error;
+      }
+
+      return start_process(left_side_arguments, 1, fd);
+    }
+  }
+  else {
+    // output io redirect
+    if (append == true) {
+      if ((fd = open(*right_side_arguments, O_CREAT | O_RDWR | O_APPEND, S_IRWXU)) < 0) {
+        print_error();
+        return error;
+      }
+
+      return start_process(left_side_arguments, 0, fd);
+    }
+    else {
+      if ((fd = open(*right_side_arguments, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU)) < 0) {
+        print_error();
+        return error;
+      }
+
+      return start_process(left_side_arguments, 0, fd);
+    }
+  }
+  
   return 1;
 }
 
