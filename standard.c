@@ -20,15 +20,15 @@ int has_io_redirect(char **parsed_input) {
     return -1;
 
   for (int i=0; parsed_input[i] != NULL; i++) {
-    if (parsed_input[i] == INPUT)
+    if (strcmp(parsed_input[i], INPUT) == 0)
       return 0;
-    if (parsed_input[i] == DOUBLE_INPUT)
+    if (strcmp(parsed_input[i], DOUBLE_INPUT) == 0)
       return 1;
-    if (parsed_input[i] == OUTPUT)
+    if (strcmp(parsed_input[i], OUTPUT) == 0)
       return 2;
-    if (parsed_input[i] == DOUBLE_OUTPUT)
+    if (strcmp(parsed_input[i], DOUBLE_OUTPUT) == 0)
       return 3;
-    if (parsed_input[i] == PIPE)
+    if (strcmp(parsed_input[i], PIPE) == 0)
       return 4;
   }
   
@@ -41,15 +41,15 @@ int find_io_redirect_position(char **parsed_input) {
     return -1;
 
   for (int i=0; parsed_input[i] != NULL; i++) {
-    if (parsed_input[i] == INPUT)
+    if (strcmp(parsed_input[i], INPUT) == 0)
       return i;
-    if (parsed_input[i] == DOUBLE_INPUT)
+    if (strcmp(parsed_input[i], DOUBLE_INPUT) == 0)
       return i;
-    if (parsed_input[i] == OUTPUT)
+    if (strcmp(parsed_input[i], OUTPUT) == 0)
       return i;
-    if (parsed_input[i] == DOUBLE_OUTPUT)
+    if (strcmp(parsed_input[i], DOUBLE_OUTPUT) == 0)
       return i;
-    if (parsed_input[i] == PIPE)
+    if (strcmp(parsed_input[i], PIPE) == 0)
       return i;
   }
   
