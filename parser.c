@@ -144,7 +144,26 @@ int run_echo(char **parsed_input) {
 // Runs the internal command: help
 // (gives the user a helpful guide to the crb_shell program)
 int run_help() {
-  // NEEDS TO BE IMPLEMENTED
+  printf("crb_shell User Manual:\n");
+  printf("  Internal Commands:\n");
+  printf("\tcd <directory>: Change the directory to the given <directory>\n");
+  printf("\tclr: clear the screen\n");
+  printf("\tdir: list the contents of the current working directory\n");
+  printf("\tenviron: list some of the local system environment variables\n");
+  printf("\techo <arguments...>: print out to given arguments\n");
+  printf("\thelp: list helpful user information for the crb_shell program\n");
+  printf("\tpause: pause the shell until the 'enter' key is pressed\n");
+  printf("\tquit: quit the crb_shell program, and return to calling shell program\n");
+  printf("  External Commands:\n");
+  printf("\tAll external commands are supported.\n");
+  printf("  Input redirects: < or <<\n");
+  printf("\tUsage: com1 args... < filename: This will use the contents of filename as the input for com1.\n");
+  printf("\tUsage: com1 args... << filename: This will use the contents of filename as the input for com1.\n");
+  printf("  Output redirects: > or >>\n");
+  printf("\tUsage: com1 args... > filename: This will append the output of com1 to filename.\n");
+  printf("\tUsage: com1 args... >> filename: This will truncate the output of com1 to filename.\n");
+  printf("  Command piping: |\n");
+  printf("\tUsage: com1 args... | com2 args...: This will link the output of com1 to the input of com2.\n");
   return 1;
 }
 
