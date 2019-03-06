@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include "standard.h"
 
+// Standard error message to print whenever an error occurs
+// This is required by the project requirements.
 void print_error() {
   char error_message[30] = "An error has occurred\n";
   write(STDERR_FILENO, error_message, strlen(error_message));
