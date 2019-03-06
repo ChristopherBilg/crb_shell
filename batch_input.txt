@@ -1,10 +1,16 @@
 dir
 pause
 clr
+pause
 environ
+pause
 cd /home/chris/Documents/crb_shell
+pause
 echo This is a test echo that should be either diplayed or saved to file.
+pause
 help
+pause
 wc main.c
+pause
 ls
 pause
