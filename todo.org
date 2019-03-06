@@ -1,16 +1,16 @@
 #+STARTUP: showeverything
-* TODO [53%] [7/13] 
+* TODO [61%] [8/13] 
   1. [X] IO Redirect input < Powerpoint
   2. [X] IO Redirect input << Powerpoint
   3. [X] IO Redirect output > Powerpoint
   4. [X] IO Redirect output >> Powerpoint
   5. [X] IO Redirect pipes | Powerpoint
   6. [X] Comment the entire program extensively
-  7. [ ] ALL lowercase "readme" file (just copy the README.md to readme) lowercase and no file extention (This is also a USER manual)
-  8. [X] fix the quit command by making it FORCE quit
-  9. [ ] Write a simple manual for USERS to be able to use the shell
-  10. [ ] Convert readme to (readme.txt, readme.pdf, readme.openoffice)
-  11. [ ] Implement the help command
+  7. [X] fix the quit command by making it FORCE quit
+  8. [X] Implement the help command
+  9. [ ] ALL lowercase "readme" file (just copy the README.md to readme) lowercase and no file extention (This is also a USER manual)
+  10. [ ] Write a simple manual for USERS to be able to use the shell
+  11. [ ] Convert readme to (readme.txt, readme.pdf, readme.openoffice)
   12. [ ] screenshot of many different testing outputs for each component, and each internal command
       1. [ ] all internal commands
       2. [ ] <
