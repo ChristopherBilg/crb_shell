@@ -1,5 +1,5 @@
 #+STARTUP: showeverything
-* TODO [30%] [4/13] 
+* TODO [38%] [5/13] 
   1. [X] IO Redirect input < Powerpoint
   2. [X] IO Redirect input << Powerpoint
   3. [X] IO Redirect output > Powerpoint
@@ -19,5 +19,5 @@
       7. [ ] Batch execution
       8. [ ] external commands (5 or so)
   11. [ ] Convert readme to (readme.txt, readme.pdf, readme.openoffice)
-  12. [ ] fix the quit command by making it FORCE quit
+  12. [X] fix the quit command by making it FORCE quit
   13. [ ] Implement the help command
