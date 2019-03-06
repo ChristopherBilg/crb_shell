@@ -10,7 +10,9 @@
 
 #define LINE_SIZE 1024
 
+// The main function that is called when the program is started
 int main(int argc, char **argv) {
+  // Check for arguments (batch file)
   if (argc > 1) {
     FILE *file;
     if ((file = fopen(argv[1], "r")) == 0) {
@@ -36,6 +38,7 @@ int main(int argc, char **argv) {
     
     fclose(file);
   }
+  // No batch file arguments
   else {
     int return_code;
     do {
@@ -55,6 +58,7 @@ int main(int argc, char **argv) {
   }
 }
 
+// Placeholders for internal commands and their associated functions (ORDER MATTERS)
 char *internal_commands[] = {"cd", "clr", "dir", "environ", "echo", "help", "pause", "quit"};
 int (*internal_functions[]) (char**) = {&run_cd, &run_clr, &run_dir, &run_environ,
                                         &run_echo, &run_help, &run_pause, &run_quit};
@@ -99,6 +103,8 @@ int start_process(char **process_input, int input, int filedesc) {
   return 1;
 }
 
+// Executes a given command (with arguments) by passing it to
+// the above start_process(...) function
 int run_execution(char **process_input) {
   // No command given, or NULL command
   if (process_input[0] == NULL)
@@ -153,13 +159,18 @@ int run_execution(char **process_input) {
   return 1;
 }
 
+// Takes in the parsed aguments for io redirects (input and output)
+// and then startts the program by passing the correct arguments
+// to the start_process(...) function. This is all after the correct
+// file descriptor is opened.
 int run_io_redirect(char **left_side_arguments,
                     char **right_side_arguments,
                     _Bool input, _Bool append) {
   int fd;
   int error = 1;
+  // The IO redirect is an input (< or <<)
   if (input == true) {
-    // input io redirect
+    // Append the file contents
     if (append == true) {
       if ((fd = open(*right_side_arguments, O_CREAT | O_RDWR | O_APPEND)) < 0) {
         print_error();
@@ -168,6 +179,7 @@ int run_io_redirect(char **left_side_arguments,
 
       return start_process(left_side_arguments, 1, fd);
     }
+    // Truncate the file contents
     else {
       if ((fd = open(*right_side_arguments, O_CREAT | O_RDWR | O_TRUNC)) < 0) {
         print_error();
@@ -177,8 +189,9 @@ int run_io_redirect(char **left_side_arguments,
       return start_process(left_side_arguments, 1, fd);
     }
   }
+  // The IO redirect is an output (> or >>)
   else {
-    // output io redirect
+    // Append the file contents
     if (append == true) {
       if ((fd = open(*right_side_arguments, O_CREAT | O_RDWR | O_APPEND, S_IRWXU)) < 0) {
         print_error();
@@ -187,6 +200,7 @@ int run_io_redirect(char **left_side_arguments,
 
       return start_process(left_side_arguments, 0, fd);
     }
+    // Truncate the file contents
     else {
       if ((fd = open(*right_side_arguments, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU)) < 0) {
         print_error();
@@ -200,6 +214,9 @@ int run_io_redirect(char **left_side_arguments,
   return 1;
 }
 
+// Handled the piping of multiple commands together by linking the output
+// of the first command to the input of the second command.
+// After this, the start_process(...) function is called to execute.
 int run_io_pipe(char **left_side_arguments, char **right_side_arguments) {
   return 1;
 }

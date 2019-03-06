@@ -6,6 +6,7 @@
 #include "parser.h"
 #include "standard.h"
 
+// This function will read the input from the user and return it as a char* (array)
 char *read_input() {
   char *input = NULL;
   size_t input_buffer_size = 0;
@@ -13,6 +14,8 @@ char *read_input() {
   return input;
 }
 
+// The will take the users input and parse it into individual
+// tokens, ie: the command, arguments, redirect, pipe, etc.
 char **parse_input(char *input) {
   int input_buffer_size = BUFFER_SIZE;
   int index = 0;
@@ -46,6 +49,8 @@ char **parse_input(char *input) {
   return all_segments;
 }
 
+// Simple function to sum up the number of arguments given by
+// a parsed user's input. (including the command name)
 int count_arguments(char **parsed_input) {
   int counter = 0;
   for (int i=0; parsed_input[i] != NULL; i++)
@@ -53,6 +58,7 @@ int count_arguments(char **parsed_input) {
   return counter;
 }
 
+// Runs the internal command: cd (change directory)
 int run_cd(char **parsed_input) {
   if (parsed_input[1] == NULL) {
       char buffer[BUFFER_SIZE];
@@ -68,11 +74,13 @@ int run_cd(char **parsed_input) {
   return 1;
 }
 
+// Runs the internal command: clr (clear screen)
 int run_clr() {
   system("clear");
   return 1;
 }
 
+// Runs the internal command: dir (list's the current directory contents)
 int run_dir(char **parsed_input) {
   DIR *d;
   if (parsed_input[1] == NULL)
@@ -93,6 +101,7 @@ int run_dir(char **parsed_input) {
   return 1;
 }
 
+// Runs the internal command: environ (list's environment variables)
 int run_environ() {
   const char* env_variables[BUFFER_SIZE];
   int size = 0;
@@ -120,6 +129,7 @@ int run_environ() {
   return 1;
 }
 
+// Runs the internal command: echo (prints all arguments out)
 int run_echo(char **parsed_input) {
   int index = 1;
   while (parsed_input[index]) {
@@ -131,17 +141,23 @@ int run_echo(char **parsed_input) {
   return 1;
 }
 
+// Runs the internal command: help
+// (gives the user a helpful guide to the crb_shell program)
 int run_help() {
   // NEEDS TO BE IMPLEMENTED
   return 1;
 }
 
+// Runs the internal command: pause
+// (pauses the crb_shell until the 'enter' key is pressed)
 int run_pause() {
   printf("Press 'enter' to continue");
   while (getchar() != '\n');
   return 1;
 }
 
+// Runs the internal command: quit (quits the crb_shell program)
 int run_quit() {
+  exit(EXIT_SUCCESS);
   return 0;
 }
