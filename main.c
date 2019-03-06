@@ -218,5 +218,45 @@ int run_io_redirect(char **left_side_arguments,
 // of the first command to the input of the second command.
 // After this, the start_process(...) function is called to execute.
 int run_io_pipe(char **left_side_arguments, char **right_side_arguments) {
+  int error = 1;
+  int child_pid = fork();
+  
+  if (child_pid < 0) {
+    print_error();
+    return error;
+  }
+  else if (child_pid == 0) {
+    // Inside the child process now
+    int pipe_fds[2];
+    if (pipe(pipe_fds) != 0) {
+      print_error();
+      return error;
+    }
+    
+    int pipe_pid = fork();
+    if (pipe_pid < 0) {
+      print_error();
+      return error;
+    }
+    else if (pipe_pid == 0) {
+      // left side command arguments to be run
+      close(STDOUT_FILENO);
+      dup2(pipe_fds[1], 1);
+      close(pipe_fds[0]);
+      execvp(left_side_arguments[0], left_side_arguments);
+    }
+    else {
+      // right side command arguments to be run
+      close(STDIN_FILENO);
+      dup2(pipe_fds[0], 0);
+      close(pipe_fds[1]);
+      execvp(right_side_arguments[0], right_side_arguments);
+    }
+  }
+  else {
+    // Inside the parent process still
+    wait(NULL);
+  }
+  
   return 1;
 }
