@@ -2,15 +2,46 @@ dir
 pause
 clr
 pause
+clr
 environ
 pause
+clr
 cd /home/chris/Documents/crb_shell
 pause
+clr
 echo This is a test echo that should be either diplayed or saved to file.
 pause
+clr
 help
 pause
+clr
 wc main.c
 pause
+clr
 ls
 pause
+clr
+sort < batch_input.txt
+pause
+clr
+ls > ls_example.txt
+pause
+clr
+ls >> ls2_exmaple.txt
+pause
+clr
+ls -l | less
+pause
+clr
+pwd
+pause
+clr
+date
+pause
+clr
+history | less
+pause
+clr
+vdir
+pause
+clr
