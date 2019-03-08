@@ -9,7 +9,7 @@
   7. [X] fix the quit command by making it FORCE quit
   8. [X] Implement the help command
   9. [X] Write a simple manual for USERS to be able to use the shell
-  10. [ ] ALL lowercase "readme" file (just copy the README.md to readme) lowercase and no file extention (This is also a USER manual)
+  10. [ ] ALL lowercase "readme" file (just copy the README.md to readme) lowercase and no file extension (This is also a USER manual)
   11. [ ] Convert readme to (readme.txt, readme.pdf, readme.openoffice)
   12. [ ] screenshot of many different testing outputs for each component, and each internal command
       1. [ ] all internal commands
