@@ -1,5 +1,5 @@
 #+STARTUP: showeverything
-* TODO [69%] [9/13] 
+* TODO [84%] [11/13] 
   1. [X] IO Redirect input < Powerpoint
   2. [X] IO Redirect input << Powerpoint
   3. [X] IO Redirect output > Powerpoint
@@ -9,15 +9,15 @@
   7. [X] fix the quit command by making it FORCE quit
   8. [X] Implement the help command
   9. [X] Write a simple manual for USERS to be able to use the shell
-  10. [ ] ALL lowercase "readme" file (just copy the README.md to readme) lowercase and no file extension (This is also a USER manual)
-  11. [ ] Convert readme to (readme.txt, readme.pdf, readme.openoffice)
-  12. [ ] screenshot of many different testing outputs for each component, and each internal command
-      1. [ ] all internal commands
-      2. [ ] <
-      3. [ ] <<
-      4. [ ] >
-      5. [ ] >>
-      6. [ ] |
-      7. [ ] Batch execution
-      8. [ ] external commands (5 or so)
+  10. [X] Convert readme to (readme.txt, readme.pdf, readme.openoffice)
+  11. [X] [100%] screenshot of many different testing outputs for each component, and each internal command
+      1. [X] all internal commands
+      2. [X] <
+      3. [X] <<
+      4. [X] >
+      5. [X] >>
+      6. [X] |
+      7. [X] Batch execution
+      8. [X] external commands (5 or so)
+  12. [ ] ALL lowercase "readme" file (just copy the README.md to readme) lowercase and no file extension (This is also a USER manual)
   13. [ ] Testing modules for all possible functions (create a separate makefile for compilation of test files)
