@@ -1,3 +1,4 @@
 tests
 *.o
 output
+*_example.txt
