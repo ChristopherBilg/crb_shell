@@ -1,4 +1,4 @@
 tests
 *.o
-output
+output*
 *_example.txt
