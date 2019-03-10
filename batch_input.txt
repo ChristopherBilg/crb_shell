@@ -39,6 +39,3 @@ clr
 history
 pause
 clr
-vdir
-pause
-clr
