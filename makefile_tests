@@ -1,0 +1,15 @@
+# The final file to be made
+output_tests: tests.o parser.o standard.o
+	gcc -o output_tests tests.o parser.o standard.o -g
+
+# The tests.o object file
+tests.o: tests.c
+	gcc -o tests.o tests.c -c -g
+
+# The parser.o object file
+parser.o: parser.c
+	gcc -o parser.o parser.c -c -g
+
+# The standard.o object file
+standard.o: standard.c
+	gcc -o standard.o standard.c -c -g
